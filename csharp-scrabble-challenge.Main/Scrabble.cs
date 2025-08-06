@@ -68,6 +68,8 @@ namespace csharp_scrabble_challenge.Main
             int _multiplier = 1;
             int _balanced_curly = 0;
             int _balanced_square = 0;
+            char _opening_bracket = ' ';
+
 
             if (!OnlyHasValidChars(_word.ToLower())) { return 0; }
             foreach(char c in _word.ToLower())
@@ -76,24 +78,28 @@ namespace csharp_scrabble_challenge.Main
                 {
                     _balanced_curly++;
                     _multiplier *= 2;
+                    _opening_bracket = '{';
                 }
                 else if (c == '[')
                 {
                     _balanced_square++;
                     _multiplier *= 3;
+                    _opening_bracket = '[';
                 }
                 else if(c == ']')
                 {
-                    if (_multiplier%3 != 0) { return 0;}
+                    if (_multiplier%3 != 0 || _opening_bracket == '{') { return 0;}
                     _balanced_square--;
                     _multiplier /= 3;
+                    _opening_bracket = ' ';
                     
                 }
                 else if (c == '}')
                 {
-                    if (_multiplier % 2 != 0) { return 0; }
+                    if (_multiplier % 2 != 0  || _opening_bracket == '[') { return 0; }
                     _balanced_curly--;
                     _multiplier /= 2;
+                    _opening_bracket = ' ';
 
                 }
                 _score += _scores[c] * _multiplier;
