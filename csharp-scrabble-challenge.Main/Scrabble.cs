@@ -56,41 +56,10 @@ namespace csharp_scrabble_challenge.Main
             return true;
         }
 
-        public string RemoveDashes(string withDashes)
-        {   if (!withDashes.Contains("\\")) {  return withDashes; }
-            StringBuilder sb = new StringBuilder(withDashes);
-            if (withDashes.Contains("\\"))
-            {
-                int indexOfDash = withDashes.IndexOf('\\');
-                //string notValidString = withDashes.Substring(indexOfDash, 2);
-                sb.Remove(indexOfDash, 2);
-                RemoveDashes(sb.ToString());
-            }
-            return "";
-        }
-
-        private string RemoveNonValidChars(string str)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach(char c in str.ToLower())
-            {
-                if (_scores.ContainsKey(c))
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-            return stringBuilder.ToString();
-        }
         public Scrabble(string word)
         {
             _word = word;
             //TODO: do something with the word variable
-        }
-
-        public void Test()
-        {
-            Console.WriteLine(RemoveDashes(_word));
-            Console.WriteLine(RemoveNonValidChars(_word));
         }
 
         public int score()
@@ -100,8 +69,6 @@ namespace csharp_scrabble_challenge.Main
             int _balanced_curly = 0;
             int _balanced_square = 0;
 
-            //string notDashes = RemoveDashes(_word);
-            //string cleanString = RemoveNonValidChars(notDashes);
             if (!OnlyHasValidChars(_word.ToLower())) { return 0; }
             foreach(char c in _word.ToLower())
             {
@@ -129,20 +96,7 @@ namespace csharp_scrabble_challenge.Main
                     _multiplier /= 2;
 
                 }
-                /*else if (c == '}' && _multiplier != 3)
-                {
-                    return 0;
-                }
-                else if (c == ')' && _multiplier != 3)
-                {
-                    return 0;
-                }
-                else if (c == '}' || c == ']')
-                {
-                    _multiplier = 1;
-                }*/
-                
-                 _score += _scores[c] * _multiplier;
+                _score += _scores[c] * _multiplier;
             }
             if (_balanced_square != 0 || _balanced_curly != 0) { return 0; }
             return _score;
