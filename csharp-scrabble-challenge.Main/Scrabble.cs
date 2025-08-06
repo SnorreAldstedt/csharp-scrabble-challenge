@@ -97,24 +97,54 @@ namespace csharp_scrabble_challenge.Main
         {
             int _score = 0;
             int _multiplier = 1;
-            string notDashes = RemoveDashes(_word);
-            string cleanString = RemoveNonValidChars(notDashes);
-            foreach(char c in cleanString)
+            int _balanced_curly = 0;
+            int _balanced_square = 0;
+
+            //string notDashes = RemoveDashes(_word);
+            //string cleanString = RemoveNonValidChars(notDashes);
+            if (!OnlyHasValidChars(_word.ToLower())) { return 0; }
+            foreach(char c in _word.ToLower())
             {
                 if (c == '{')
                 {
-                    _multiplier = 2;
+                    _balanced_curly++;
+                    _multiplier *= 2;
                 }
                 else if (c == '[')
                 {
-                    _multiplier = 3;
+                    _balanced_square++;
+                    _multiplier *= 3;
+                }
+                else if(c == ']')
+                {
+                    if (_multiplier%3 != 0) { return 0;}
+                    _balanced_square--;
+                    _multiplier /= 3;
+                    
+                }
+                else if (c == '}')
+                {
+                    if (_multiplier % 2 != 0) { return 0; }
+                    _balanced_curly--;
+                    _multiplier /= 2;
+
+                }
+                /*else if (c == '}' && _multiplier != 3)
+                {
+                    return 0;
+                }
+                else if (c == ')' && _multiplier != 3)
+                {
+                    return 0;
                 }
                 else if (c == '}' || c == ']')
                 {
                     _multiplier = 1;
-                }
-                _score += _scores[c] * _multiplier;
+                }*/
+                
+                 _score += _scores[c] * _multiplier;
             }
+            if (_balanced_square != 0 || _balanced_curly != 0) { return 0; }
             return _score;
             //TODO: score calculation code goes here
         }
