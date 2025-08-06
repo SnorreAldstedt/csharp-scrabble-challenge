@@ -98,7 +98,7 @@ namespace csharp_scrabble_challenge.Main
                 }
                 _score += _scores[c] * _multiplier;
             }
-            if (_balanced_square != 0 || _balanced_curly != 0) { return 0; }
+            if (_balanced_square != 0 || _balanced_curly != 0 || _multiplier != 1) { return 0; }
             return _score;
             //TODO: score calculation code goes here
         }
